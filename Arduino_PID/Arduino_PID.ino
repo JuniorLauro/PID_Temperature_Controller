@@ -16,7 +16,7 @@ DallasTemperature sensors(&oneWire);    /*encaminha referências OneWire para o 
  */
 
 int controlePwm = 0;      /*Variável de controle*/
-float setPoint = 25.0;    /*Definindo o setPoint*/
+float setPoint = 30.0;    /*Definindo o setPoint*/
 float temperatura = 0.0;  /*Variável que armazena o valor lido pelo sensor*/
 float erro = 0.0;         /*Variavél do erro*/ 
 float ultTemp = 0.0;      /*Variável que indica ultima temperatura lida*/
@@ -76,5 +76,5 @@ void loop(void)
  Serial.println(controlePwm);
  
  /*Saida do controlador*/
- //analogWrite(led, controlePwm);
+ analogWrite(led, controlePwm);
 }
