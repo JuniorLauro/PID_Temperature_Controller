@@ -3,7 +3,7 @@
 #include <DallasTemperature.h>
 
 #define dados 7   /*o pino de dados do sensor está ligado na porta 7 do Arduino */
-#define led   9   /*o pino de saída com o LED simulando a resistência */   
+#define atuador   9   /*o pino de saída que liga o atuador para controlar a resistência */   
 
 OneWire oneWire(dados);   /* Protocolo OneWire */
 DallasTemperature sensors(&oneWire);    /*encaminha referências OneWire para o sensor */
@@ -11,8 +11,8 @@ DallasTemperature sensors(&oneWire);    /*encaminha referências OneWire para o 
 /* Descrição: Controle PID de temperatura. Onde indicando o valor de setPoint, será realizado o controle constante da variável.
  * SetPoint: 30º C
  * 
- * Para este circuito em questão, o LED representando a nossa resistência vai variar conforme o valor do sensor diferir ao do setPoint (parte proporcional). 
- * Quanto maior a diferença, maior será a intensidade de seu brilho, indicando uma "maior ação de aquecimento".
+ * O pino de saída definido como atuador irá variar conforme os parâmetros recebidos pelas partes PID. Uma vez lidos e processados, o sinal PWM irá acionar um relé
+ * de estado sólido para variar a tensão da resistência elétrica.
  */
 
 int controlePwm = 0;      /*Variável de controle*/
@@ -49,9 +49,6 @@ void loop(void)
  temperatura = sensors.getTempCByIndex(0); /* Endereço do sensor */
  Serial.print("SetPoint: 25, temperatura: ");
  Serial.println(sensors.getTempCByIndex(0));
-
- //verificar se precisa da proxima linha, pois eu já recebo o valor da temperatura.
- // int val = map(sensors.getTempCByIndex(0), -10, 85, 0, 255); /* Mapeamento do sensor para controle PWM */
  
  /*Implementação PID*/
  erro = setPoint - temperatura;
@@ -76,5 +73,5 @@ void loop(void)
  Serial.println(controlePwm);
  
  /*Saida do controlador*/
- analogWrite(led, controlePwm);
+ analogWrite(atuador, controlePwm);
 }
